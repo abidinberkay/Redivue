@@ -1,0 +1,7 @@
+backend/frontend/node_modules/
+backend/target/
+backend/src/main/resources/static/
+.idea/
+init-scripts/
+deploy/ssl/
+*.md

@@ -1,0 +1,314 @@
+.keydiff-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.keydiff-title { margin: 0 0 2px; font-size: 1.05rem; font-weight: 600; color: var(--text-primary, var(--color-text-primary)) }
+.keydiff-subtitle { margin: 0; font-size: 0.8rem; color: var(--text-muted, var(--color-text-secondary)) }
+
+/* === Controls === */
+.keydiff-controls { display: flex; flex-direction: column; gap: 10px }
+
+.keydiff-connections { display: flex; align-items: center; gap: 8px }
+
+.keydiff-conn {
+  flex: 1; min-width: 0;
+  background: var(--bg-card, var(--color-surface));
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.keydiff-conn-left  { border-color: var(--color-primary) }
+.keydiff-conn-right { border-color: var(--color-success) }
+.keydiff-conn-label { font-size: 0.68rem; color: var(--text-muted, var(--color-text-secondary)); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px }
+.keydiff-conn-name  { font-weight: 600; font-size: 0.88rem; color: var(--text-primary, var(--color-text-primary)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.keydiff-conn-db    { font-size: 0.75rem; color: var(--text-muted, var(--color-text-secondary)); margin-top: 1px }
+
+.keydiff-db-select {
+  margin-top: 4px;
+  background: var(--bg-input, var(--color-background));
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 4px;
+  color: var(--text-muted, var(--color-text-secondary));
+  padding: 3px 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  width: fit-content;
+}
+.keydiff-db-select:hover { border-color: var(--color-primary); color: var(--text-primary, var(--color-text-primary)) }
+.keydiff-no-conn    { font-size: 0.8rem; color: var(--text-muted, var(--color-text-secondary)); font-style: italic; margin-top: 4px }
+
+.keydiff-swap-btn {
+  flex-shrink: 0;
+  background: var(--bg-card, var(--color-surface));
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 6px;
+  color: var(--text-muted, var(--color-text-secondary));
+  font-size: 1.1rem;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.keydiff-swap-btn:not(:disabled):hover { color: var(--color-primary); border-color: var(--color-primary) }
+.keydiff-swap-btn:disabled { opacity: 0.35; cursor: not-allowed }
+
+.keydiff-select {
+  width: 100%; margin-top: 4px;
+  background: var(--bg-input, var(--color-background));
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 4px;
+  color: var(--text-primary, var(--color-text-primary));
+  padding: 5px 8px;
+  font-size: 0.82rem;
+}
+
+.keydiff-key-row { display: flex; gap: 6px; align-items: center }
+
+.keydiff-key-input-wrap { flex: 1; display: flex; min-width: 0 }
+
+.keydiff-key-input {
+  flex: 1;
+  background: var(--bg-input, var(--color-background));
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 4px 0 0 4px;
+  color: var(--text-primary, var(--color-text-primary));
+  padding: 7px 10px;
+  font-size: 0.88rem;
+  font-family: monospace;
+}
+.keydiff-key-input:focus { outline: none; border-color: var(--color-primary) }
+
+.keydiff-clipboard-btn {
+  background: var(--bg-card, var(--color-surface));
+  border: 1px solid var(--border, var(--color-border));
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  color: var(--text-muted, var(--color-text-secondary));
+  padding: 7px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+.keydiff-clipboard-btn:not(:disabled):hover { color: var(--text-primary, var(--color-text-primary)) }
+.keydiff-clipboard-btn:disabled { opacity: 0.35; cursor: not-allowed }
+.keydiff-clipboard-btn-ok { color: var(--color-success) !important }
+
+/* === Buttons === */
+.keydiff-btn {
+  border: none; border-radius: 4px; cursor: pointer;
+  font-size: 0.82rem; font-weight: 500; padding: 7px 14px;
+  transition: opacity 0.15s, background 0.15s;
+  white-space: nowrap; flex-shrink: 0;
+}
+.keydiff-btn:disabled { opacity: 0.4; cursor: not-allowed }
+
+.keydiff-btn-primary { background: var(--color-primary); color: #fff }
+.keydiff-btn-primary:not(:disabled):hover { background: var(--color-primary-dark) }
+
+.keydiff-btn-secondary {
+  background: var(--bg-card, var(--color-surface));
+  border: 1px solid var(--border, var(--color-border));
+  color: var(--text-primary, var(--color-text-primary));
+}
+.keydiff-btn-secondary:not(:disabled):hover { border-color: var(--color-primary) }
+
+
+.keydiff-btn-sync {
+  background: var(--bg-card, var(--color-surface));
+  border: 1px solid var(--border, var(--color-border));
+  color: var(--text-primary, var(--color-text-primary));
+  font-size: 0.78rem; padding: 5px 11px;
+}
+.keydiff-btn-sync:not(:disabled):hover { border-color: var(--color-primary); color: var(--color-primary) }
+
+.keydiff-btn-export {
+  background: transparent;
+  border: 1px solid var(--border, var(--color-border));
+  color: var(--text-muted, var(--color-text-secondary));
+  font-size: 0.75rem; padding: 4px 9px;
+}
+.keydiff-btn-export:hover { border-color: var(--color-text-tertiary); color: var(--text-primary, var(--color-text-primary)) }
+
+/* === Error === */
+.keydiff-error {
+  background: var(--color-error-container); border: 1px solid var(--color-error);
+  border-radius: 4px; color: var(--color-error-light); padding: 8px 12px; font-size: 0.82rem;
+}
+
+/* === Result meta bar === */
+.keydiff-result { display: flex; flex-direction: column; gap: 10px }
+
+.keydiff-result-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap }
+
+.keydiff-badge {
+  display: inline-block; padding: 2px 9px; border-radius: 10px;
+  font-size: 0.75rem; font-weight: 600; flex-shrink: 0;
+}
+.keydiff-badge-same { background: var(--color-success-container); color: var(--color-success); border: 1px solid var(--color-success-container) }
+.keydiff-badge-diff { background: var(--color-warning-container); color: var(--color-warning-light); border: 1px solid var(--color-warning-container) }
+
+.keydiff-meta-detail { font-size: 0.78rem; color: var(--text-muted, var(--color-text-secondary)) }
+.keydiff-type-mismatch { color: var(--color-warning-light) }
+
+.keydiff-stats { display: flex; gap: 6px; align-items: center; font-size: 0.78rem }
+.keydiff-stat-rem { color: var(--color-error-light); font-weight: 600 }
+.keydiff-stat-add { color: var(--color-success); font-weight: 600 }
+.keydiff-stat-sim { color: var(--text-muted, var(--color-text-secondary)) }
+
+.keydiff-meta-actions { display: flex; gap: 6px; align-items: center; margin-left: auto; flex-wrap: wrap }
+.keydiff-export-group { display: flex; gap: 4px }
+.keydiff-sync-actions { display: flex; gap: 6px }
+
+/* === Search bar === */
+.keydiff-search-bar {
+  position: relative; display: flex; align-items: center;
+}
+.keydiff-search-input {
+  width: 100%;
+  background: var(--bg-input, var(--color-background));
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 4px;
+  color: var(--text-primary, var(--color-text-primary));
+  padding: 6px 32px 6px 10px;
+  font-size: 0.82rem;
+}
+.keydiff-search-input:focus { outline: none; border-color: var(--color-primary) }
+.keydiff-search-clear {
+  position: absolute; right: 8px;
+  background: none; border: none; color: var(--text-muted, var(--color-text-secondary));
+  cursor: pointer; font-size: 1rem; line-height: 1; padding: 0;
+}
+.keydiff-search-clear:hover { color: var(--text-primary, var(--color-text-primary)) }
+
+/* === Side-by-side panels === */
+.keydiff-panels {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  border: 1px solid var(--border, var(--color-border)); border-radius: 6px; overflow: hidden;
+}
+.keydiff-panel { display: flex; flex-direction: column; min-height: 100px; max-height: 440px; overflow: hidden }
+
+.keydiff-panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 12px;
+  background: var(--bg-header, var(--color-surface));
+  border-bottom: 1px solid var(--border, var(--color-border));
+  flex-shrink: 0; gap: 8px;
+}
+.keydiff-panel-name { font-weight: 600; font-size: 0.8rem; color: var(--text-primary, var(--color-text-primary)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.keydiff-panel-meta { font-size: 0.72rem; color: var(--text-muted, var(--color-text-secondary)); white-space: nowrap; flex-shrink: 0 }
+
+.keydiff-panel-body { flex: 1; overflow: auto; background: var(--bg-code, var(--color-background)) }
+
+.keydiff-missing { padding: 14px; color: var(--color-error-light); font-size: 0.83rem; font-style: italic }
+.keydiff-empty { color: var(--text-muted, var(--color-text-secondary)); font-style: italic }
+
+.keydiff-pre {
+  margin: 0; padding: 0;
+  font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.78rem; line-height: 1.6;
+  white-space: pre; color: var(--text-primary, var(--color-text-primary));
+}
+
+.keydiff-line { display: block; padding: 0 12px; min-height: 1.6em }
+.keydiff-line-same        { color: var(--text-primary, var(--color-text-primary)) }
+.keydiff-line-left-only   { background: rgba(239, 68, 68, 0.18); color: var(--color-error-light) }
+.keydiff-line-right-only  { background: rgba(34, 197, 94, 0.15); color: var(--color-success-light) }
+.keydiff-line-placeholder { background: rgba(148, 163, 184, 0.05); color: transparent }
+.keydiff-line-match       { outline: 2px solid var(--color-warning); outline-offset: -1px; border-radius: 2px }
+
+/* === Batch sync === */
+.keydiff-batch {
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 6px; overflow: hidden;
+}
+.keydiff-batch-toggle {
+  width: 100%; display: flex; align-items: center; gap: 8px;
+  background: var(--bg-card, var(--color-surface));
+  border: none; color: var(--text-primary, var(--color-text-primary));
+  padding: 10px 14px; cursor: pointer; text-align: left;
+  font-size: 0.85rem; font-weight: 600;
+}
+.keydiff-batch-toggle:hover { background: var(--color-surface) }
+.keydiff-batch-arrow { font-size: 0.7rem; color: var(--text-muted, var(--color-text-secondary)) }
+.keydiff-batch-hint { font-size: 0.75rem; color: var(--text-muted, var(--color-text-secondary)); font-weight: 400; margin-left: auto }
+
+.keydiff-batch-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; background: var(--bg-code, var(--color-background)) }
+
+.keydiff-batch-dir-row { display: flex; align-items: flex-start; gap: 12px }
+.keydiff-batch-dir-label { font-size: 0.75rem; color: var(--text-muted, var(--color-text-secondary)); padding-top: 3px; flex-shrink: 0 }
+.keydiff-batch-dir-options { display: flex; flex-direction: column; gap: 6px }
+.keydiff-batch-radio { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--text-primary, var(--color-text-primary)); cursor: pointer }
+
+.keydiff-batch-db-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-card, var(--color-surface));
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 4px;
+}
+.keydiff-batch-db-label { font-size: 0.75rem; color: var(--text-muted, var(--color-text-secondary)) }
+.keydiff-batch-db-arrow { color: var(--text-muted, var(--color-text-secondary)); font-size: 0.85rem }
+
+.keydiff-batch-scan-row { display: flex; gap: 8px }
+.keydiff-batch-scan-row .keydiff-key-input { border-radius: 4px }
+
+.keydiff-batch-found { display: flex; flex-direction: column; gap: 8px }
+.keydiff-batch-found-zero { font-size: 0.82rem; color: var(--text-muted, var(--color-text-secondary)) }
+.keydiff-batch-found-count { font-size: 0.82rem; color: var(--color-success); font-weight: 600 }
+.keydiff-batch-key-list { margin: 0; padding: 0 0 0 14px; font-size: 0.78rem; font-family: monospace; color: var(--text-muted, var(--color-text-secondary)) }
+.keydiff-batch-more { color: var(--color-text-tertiary); font-style: italic }
+
+.keydiff-batch-confirm {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  background: var(--color-surface); border: 1px solid var(--color-warning-container);
+  border-radius: 4px; padding: 10px 12px;
+  font-size: 0.82rem; color: var(--color-warning);
+}
+
+.keydiff-batch-result {
+  padding: 8px 12px; border-radius: 4px; font-size: 0.82rem;
+}
+.keydiff-batch-result-ok { background: var(--color-success-container); color: var(--color-success); border: 1px solid var(--color-success-container) }
+.keydiff-batch-result-partial { background: var(--color-warning-container); color: var(--color-warning-light); border: 1px solid var(--color-warning-container) }
+
+/* === Confirm overlay === */
+.keydiff-confirm-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.keydiff-confirm-box {
+  background: var(--bg-card, var(--color-surface));
+  border: 1px solid var(--border, var(--color-border));
+  border-radius: 8px; padding: 22px; width: 410px; max-width: 90vw;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.keydiff-confirm-title { font-size: 0.95rem; font-weight: 600; color: var(--text-primary, var(--color-text-primary)); margin-bottom: 14px }
+.keydiff-confirm-body p { margin: 0 0 10px; font-size: 0.82rem; color: var(--text-muted, var(--color-text-secondary)) }
+.keydiff-confirm-detail {
+  background: var(--bg-code, var(--color-background)); border: 1px solid var(--border, var(--color-border));
+  border-radius: 5px; padding: 10px 12px; margin-bottom: 10px;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.keydiff-confirm-row { display: flex; align-items: baseline; gap: 10px }
+.keydiff-confirm-label { font-size: 0.68rem; color: var(--text-muted, var(--color-text-secondary)); text-transform: uppercase; letter-spacing: 0.06em; width: 34px; flex-shrink: 0 }
+.keydiff-confirm-value { font-size: 0.85rem; color: var(--text-primary, var(--color-text-primary)); font-family: monospace; word-break: break-all }
+.keydiff-confirm-target { color: var(--color-warning-light); font-family: inherit }
+.keydiff-confirm-db { font-size: 0.72rem; color: var(--text-muted, var(--color-text-secondary)); font-family: inherit }
+.keydiff-confirm-warn { font-size: 0.78rem; color: var(--color-warning-light); margin: 0 0 18px !important }
+.keydiff-confirm-actions { display: flex; gap: 8px; justify-content: flex-end }
+
+.keydiff-btn-confirm-ok { background: var(--color-error); color: #fff; padding: 7px 18px }
+.keydiff-btn-confirm-ok:hover { background: var(--color-primary-darker) }
+.keydiff-btn-confirm-cancel {
+  background: var(--bg-card, var(--color-surface));
+  border: 1px solid var(--border, var(--color-border));
+  color: var(--text-primary, var(--color-text-primary));
+  padding: 7px 14px;
+}
+.keydiff-btn-confirm-cancel:hover { border-color: var(--color-text-tertiary) }

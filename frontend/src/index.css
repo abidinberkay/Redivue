@@ -1,0 +1,119 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── shadcn/ui token bridge ──────────────────────────────────────────────
+   shadcn semantic vars map straight onto our tokens.css design variables,
+   so there is one source of truth and dark mode flips automatically
+   (tokens.css already redefines --color-* under prefers-color-scheme and
+   [data-theme]). No separate .dark block needed here. */
+@layer base {
+  :root {
+    --background: var(--color-background);
+    --foreground: var(--color-text-primary);
+
+    --card: var(--color-surface);
+    --card-foreground: var(--color-text-primary);
+
+    --popover: var(--color-surface);
+    --popover-foreground: var(--color-text-primary);
+
+    --primary: var(--color-primary);
+    --primary-foreground: var(--color-on-primary);
+
+    --secondary: var(--color-surface-container);
+    --secondary-foreground: var(--color-text-primary);
+
+    --muted: var(--color-surface-container);
+    --muted-foreground: var(--color-text-secondary);
+
+    --accent: var(--color-surface-container-high);
+    --accent-foreground: var(--color-text-primary);
+
+    --destructive: var(--color-error);
+    --destructive-foreground: var(--color-on-primary);
+
+    --success: var(--color-success);
+    --success-foreground: var(--color-on-primary);
+
+    --warning: var(--color-warning);
+    --warning-foreground: #1a1a1a;
+
+    --border: var(--color-border);
+    --input: var(--color-border);
+    --ring: var(--color-primary);
+
+    --radius: 0.5rem;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body-medium);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-tight);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+/* Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+  transition: background var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-dark);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}

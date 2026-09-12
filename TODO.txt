@@ -1,0 +1,50 @@
+================================================================
+REDISINSIGHT COMPARISON — OPEN TASKS
+See FEATURES.md for completed features. This file contains only
+pending/planned work.
+================================================================
+
+OPEN SOURCE PREPARATION (in priority order):
+
+1. DEPLOYMENT.md
+   - Production setup, Docker Compose production config
+   - Environment variables, TLS setup, SSH key management
+   - Redis version compatibility matrix
+
+2. README.md update
+   - Installation (source build + Docker)
+   - Quick start (build/run + add your first Redis connection — no bundled test Redis, no login screen)
+   - Feature list (what works, what's limited, alternatives)
+   - Architecture overview (Backend Spring Boot 3, Frontend React 18, Lettuce)
+   - Project Structure section is stale (pre-TypeScript-migration paths) — needs a full rewrite
+
+3. OSV-SCANNER security scan
+   - npm audit + Maven Central CVE check
+   - Dependency vulnerability report
+
+
+ADVANCED LEVEL (optional, backlog):
+
+4. WORKBENCH style advanced command editor
+   - Monaco editor, multi-line, syntax highlighting, smart autocomplete (more advanced than CLI)
+   - Query library (saved queries — evolution of CLI favorites)
+
+5. CLUSTER DETAILS dashboard
+   - Node list, slot distribution, shards, per-node memory/ops metrics (CLUSTER SHARDS/NODES visualization)
+
+6. RediSearch (FT.*) support — index list, FT.SEARCH query interface (if module present)
+
+7. More comprehensive RECOMMENDATIONS engine
+   - RedisInsight gives contextual recommendations (large keys, encoding suggestions, missing TTLs etc.)
+   - Memory Analysis recommendations can be expanded
+
+8. Frontend UI/UX polish
+    - More modern, clean, consistent design refresh
+
+
+OUT OF SCOPE (deliberately not being done — enterprise/cloud focused):
+- Redis Cloud / Azure / Redis Enterprise autodiscovery
+- Sentinel master autodiscovery (SENTINEL masters with automatic list — currently manual, not needed)
+- AI copilot
+- RDI (Redis Data Integration)
+- Plugin system, interactive tutorials, telemetry, notification center

@@ -1,0 +1,28 @@
+# Bulk Import Test — Redis Commands
+# Lines starting with # are ignored
+# Blank lines are also ignored
+
+# String operations
+SET test:key1 "Hello Redis"
+SET test:key2 "Bulk Import Test"
+SET counter 100
+
+# Hash operations
+HSET user:1 name "Alice" email "alice@example.com" age "30"
+HSET user:2 name "Bob" email "bob@example.com" age "25"
+
+# List operations
+LPUSH queue:jobs job1 job2 job3
+RPUSH tasks:todo task1 task2 task3 task4
+
+# Set operations
+SADD tags:important tag1 tag2 tag3
+SADD tags:urgent urgent1 urgent2
+
+# Sorted Set operations
+ZADD leaderboard 100 player1 95 player2 85 player3 75 player4
+ZADD scores 10 score10 20 score20 30 score30
+
+# With TTL (set expiry separately)
+SET session:abc "session-token-xyz"
+EXPIRE session:abc 3600

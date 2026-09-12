@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: redivue-backend
+  mvc:
+    async:
+      request-timeout: -1
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.redivue: DEBUG

@@ -1,0 +1,496 @@
+/* ============================================================================
+   CONNECTION FORM (Material Design 3)
+   Add/edit/delete Redis connections with various auth types
+   ============================================================================ */
+
+.connection-form {
+  background: var(--color-surface);
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+
+.connection-form h2 {
+  font-size: var(--font-size-title-medium);
+  margin-bottom: var(--space-lg);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--space-lg) 0;
+}
+
+/* ─── FORM GROUP ─── */
+
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-size-label-medium);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-small);
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+  font-family: var(--font-family-primary);
+}
+
+.form-group select option {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+.form-group input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.form-hint {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-label-small);
+  margin-top: var(--space-xs);
+  display: block;
+  line-height: var(--line-height-normal);
+}
+
+/* ─── AUTH HINTS ─── */
+
+.auth-hint {
+  display: flex;
+  gap: var(--space-md);
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.auth-hint-icon {
+  color: var(--color-primary);
+  font-size: var(--font-size-label-large);
+  flex-shrink: 0;
+  margin-top: 2px;
+  line-height: var(--line-height-tight);
+}
+
+.auth-hint-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.auth-hint-body strong {
+  display: block;
+  font-size: var(--font-size-label-small);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  margin-bottom: var(--space-xs);
+}
+
+.auth-hint-body p {
+  font-size: var(--font-size-label-small);
+  color: var(--color-text-tertiary);
+  margin: 0 0 var(--space-xs) 0;
+  line-height: var(--line-height-normal);
+}
+
+.auth-hint-examples {
+  margin-top: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.auth-hint-examples code {
+  font-size: var(--font-size-label-small);
+  color: var(--color-primary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  padding: var(--space-xs);
+  font-family: var(--font-family-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  font-weight: var(--font-weight-medium);
+}
+
+/* ─── TLS SECTION ─── */
+
+.tls-row {
+  margin-bottom: var(--space-md);
+}
+
+.tls-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-body-small);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.tls-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.tls-warning {
+  display: flex;
+  gap: var(--space-md);
+  background: rgba(255, 152, 0, 0.08);
+  border: 1px solid rgba(255, 152, 0, 0.2);
+  border-left: 3px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  font-size: var(--font-size-label-small);
+  color: var(--color-warning);
+}
+
+.tls-warning span {
+  flex-shrink: 0;
+  font-size: var(--font-size-label-large);
+  margin-top: 2px;
+}
+
+.tls-warning div p {
+  margin: 0 0 var(--space-xs) 0;
+  color: var(--color-warning);
+  line-height: var(--line-height-normal);
+}
+
+.tls-warning div p:last-child {
+  margin: 0;
+}
+
+.tls-warning code {
+  font-size: var(--font-size-label-small);
+  color: var(--color-warning);
+  background: var(--color-surface);
+  border-radius: var(--radius-xs);
+  padding: var(--space-xs);
+  font-family: var(--font-family-mono);
+}
+
+.tls-warning p {
+  margin: 0;
+  color: var(--color-warning);
+  line-height: var(--line-height-normal);
+}
+
+/* TLS Certificate sections */
+
+.tls-cert-section {
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.tls-cert-label {
+  font-size: var(--font-size-label-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  margin-bottom: var(--space-md);
+}
+
+.tls-optional {
+  font-weight: var(--font-weight-regular);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-text-tertiary);
+}
+
+.tls-insecure {
+  color: var(--color-warning);
+}
+
+.tls-trust-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.tls-radio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-body-small);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.tls-radio input[type="radio"] {
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+.pem-textarea {
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  font-size: var(--font-size-label-small);
+  font-family: var(--font-family-mono);
+  resize: vertical;
+  box-sizing: border-box;
+  line-height: var(--line-height-relaxed);
+  transition: all var(--transition-fast);
+}
+
+.pem-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+.pem-textarea::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.field-hint {
+  font-size: var(--font-size-label-small);
+  color: var(--color-text-tertiary);
+  margin: var(--space-sm) 0 0 0;
+  line-height: var(--line-height-normal);
+}
+
+.field-hint code {
+  color: var(--color-primary);
+  background: var(--color-surface);
+  border-radius: var(--radius-xs);
+  padding: var(--space-xs);
+  font-family: var(--font-family-mono);
+}
+
+/* ─── SSH TUNNEL SECTION ─── */
+
+.ssh-tunnel-section {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  overflow: hidden;
+  background: var(--color-surface-container);
+}
+
+.ssh-tunnel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+  background: var(--color-surface-container);
+}
+
+.ssh-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ssh-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.ssh-hint {
+  font-size: var(--font-size-label-small);
+  color: var(--color-text-tertiary);
+}
+
+.ssh-tunnel-body {
+  padding: var(--space-md);
+  background: var(--color-surface-container);
+  border-top: 1px solid var(--color-border);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.form-group-grow {
+  flex: 1;
+}
+
+.form-group-fixed {
+  width: 80px;
+}
+
+.ssh-auth-tabs {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.ssh-tab {
+  padding: var(--space-sm);
+  font-size: var(--font-size-body-small);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.ssh-tab:hover {
+  border-color: var(--color-primary);
+  color: var(--color-text-primary);
+}
+
+.ssh-tab.active {
+  background: rgba(211, 47, 47, 0.12);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.ssh-info {
+  display: flex;
+  gap: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-top: var(--space-md);
+  font-size: var(--font-size-label-small);
+  color: var(--color-text-secondary);
+}
+
+.ssh-info span {
+  flex-shrink: 0;
+  color: var(--color-primary);
+  font-size: var(--font-size-label-large);
+  margin-top: 2px;
+}
+
+.ssh-info p {
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+.ssh-info strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ─── ERROR MESSAGE ─── */
+
+.error-message {
+  padding: var(--space-md);
+  background: rgba(244, 67, 54, 0.08);
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body-small);
+  margin-bottom: var(--space-md);
+  line-height: var(--line-height-normal);
+}
+
+/* ─── BUTTONS ─── */
+
+.submit-btn {
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-body-medium);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-family-primary);
+  min-height: var(--size-control-large);
+}
+
+.submit-btn:hover {
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── RESPONSIVE ─── */
+
+@media (max-width: 768px) {
+  .connection-form {
+    padding: var(--space-md);
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .form-group-fixed {
+    width: 100%;
+  }
+
+  .ssh-auth-tabs {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
