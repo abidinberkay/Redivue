@@ -1,0 +1,8 @@
+# Used by the release workflow only. The jar is built once natively by CI, so the
+# multi-arch image is just a copy into a JRE base — no Maven/npm run under QEMU emulation.
+# To build from source, use the Dockerfile at the repo root instead.
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY build/app.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
