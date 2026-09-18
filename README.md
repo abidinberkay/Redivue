@@ -11,7 +11,7 @@ license server.
 ![React 18](https://img.shields.io/badge/React-18-61dafb)
 
 <p align="center">
-  <img src="assets/screenshots/stats.jpg" alt="Redivue stats dashboard" width="90%">
+  <img src="assets/screenshots/demo.gif" alt="Redivue walkthrough — stats, keys browser, CLI and memory analysis" width="90%">
 </p>
 
 ## Why Redivue?
@@ -23,8 +23,9 @@ license server.
 - **Stateless backend.** Connection details live in your browser's `localStorage`, not a
   database Redivue owns. Point it at any Redis you already have; nothing to migrate to adopt it,
   nothing to migrate away from it either.
-- **RedisInsight-level feature depth**, built as a smaller, hackable Spring Boot + React app
-  instead of an Electron bundle.
+- **Deploy once, use from any browser.** Most open-source Redis GUIs are Electron desktop apps
+  that every teammate installs separately. Redivue is a single container you put on your own
+  infra — everyone opens a URL, nobody installs anything.
 
 ## Features
 
@@ -67,20 +68,33 @@ See [FEATURES.md](FEATURES.md) for the full, itemized changelog-style feature li
   <img src="assets/screenshots/memory-analysis.jpg" alt="Memory analysis view" width="49%">
   <img src="assets/screenshots/monitor.jpg" alt="Real-time monitor" width="49%">
 </p>
+<p align="center">
+  <img src="assets/screenshots/stats.jpg" alt="Stats dashboard" width="49%">
+  <img src="assets/screenshots/pubsub.jpg" alt="Pub/Sub live messages" width="49%">
+</p>
 
 ## Quick Start
 
 ### Docker
 
 ```bash
-git clone https://github.com/abidinberkay/Redivue.git
-cd Redivue
-docker build -t redivue .
-docker run -p 8080:8080 redivue
+docker run -p 8080:8080 ghcr.io/abidinberkay/redivue:latest
+```
+
+Or with Compose:
+
+```yaml
+services:
+  redivue:
+    image: ghcr.io/abidinberkay/redivue:latest
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
 ```
 
 Open `http://localhost:8080` and add a connection to any Redis reachable from the container
 (use `host.docker.internal` instead of `localhost` to reach a Redis running on your host).
+Images are published for `linux/amd64` and `linux/arm64`.
 
 ### From source
 
@@ -95,6 +109,8 @@ mvn spring-boot:run
 
 Open `http://localhost:8080`. No test Redis is bundled — point Redivue at one you already have,
 or spin up a throwaway: `docker run -d -p 6379:6379 redis:7-alpine`.
+
+To build the container image yourself instead of pulling it: `docker build -t redivue .`
 
 **Development mode** (hot reload on the frontend):
 
