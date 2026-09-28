@@ -60,9 +60,10 @@ jobs:
   security-scan:
     name: Container image vulnerability scan (Trivy)
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
+    # No elevated permissions requested - this repo's default GITHUB_TOKEN permissions may be
+    # read-only (GitHub's newer default), and a job asking for security-events: write fails
+    # immediately at "Set up job" if so. Printing results to the log instead of uploading SARIF
+    # to the Security tab means this works regardless of that repo setting.
     steps:
       - uses: actions/checkout@v4
 
@@ -85,14 +86,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.36.0
         with:
           image-ref: redivue:scan
-          format: sarif
-          output: trivy-results.sarif
+          format: table
           severity: CRITICAL,HIGH
           # Report only, don't fail the build - this is visibility, not a merge gate (yet).
           exit-code: "0"
-
-      - name: Upload results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
-        if: always()
-        with:
-          sarif_file: trivy-results.sarif
