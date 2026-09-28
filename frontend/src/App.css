@@ -25,6 +25,11 @@
   height: var(--header-height);
 }
 
+.header-logo {
+  flex-shrink: 0;
+  display: block;
+}
+
 .header h1 {
   font-size: var(--font-size-headline-small);
   font-weight: var(--font-weight-semibold);

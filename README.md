@@ -1,4 +1,8 @@
-# Redivue
+<p align="center">
+  <img src="assets/icon.png" alt="Redivue" width="96">
+</p>
+
+<h1 align="center">Redivue</h1>
 
 **A free, open-source, self-hosted Redis GUI** — manage multiple Redis instances from one
 dashboard: browse and edit keys, run a full CLI, watch live traffic, analyze memory, and more.
@@ -29,12 +33,23 @@ license server.
 
 ## Features
 
+Everything below is in the codebase today — no "Pro" tier gating any of it. For what each one
+actually does and how to use it, see the **[User Guide](GUIDE.md)**; this is the scan-it-in-10-
+seconds version.
+
+**Dashboard & connections**
+- Stats dashboard — memory, keys, clients, uptime, version, role, AOF status, last `BGSAVE`
+- Live config editing from the dashboard — `maxmemory` (with presets) and AOF toggle, no CLI needed
+- Connection health indicator with a live key-count badge in the sidebar
+- Database selector (DB 0–15) per connection, with `FLUSHDB` confirmation
+
 **Keys & data**
 - Keys browser with SCAN-based pagination, pattern search, and namespace tree view (`user:1:profile` → folders)
 - Full CRUD for every Redis type — String, Hash, List, Set, Sorted Set, **Stream**, and **RedisJSON**
 - Value formatters: JSON tree, HEX dump, Binary, Timestamp, plus GZIP/Deflate/ZSTD/LZ4/Snappy decompression
 - Per-key memory size (`MEMORY USAGE`), TTL countdown, bulk TTL/delete/export (JSON & CSV) by pattern or selection
 - Copy/migrate keys across databases and connections, including a type-agnostic `DUMP`/`RESTORE` fallback for module types
+- Search history (last 10 patterns) and starred key bookmarks, exportable as JSON
 
 **CLI & scripting**
 - Full CLI console — 150+ Redis commands with autocomplete, syntax help, history, favorites, and confirmation on destructive commands (`FLUSHALL`, `SHUTDOWN`, …)
@@ -57,7 +72,8 @@ license server.
 - Key Diff — compare (and sync) the same key across two connections, side by side
 - Resizable sidebar, per-connection state, activity log with undo on mutations
 
-See [FEATURES.md](FEATURES.md) for the full, itemized changelog-style feature list, and
+See the **[User Guide](GUIDE.md)** for how to actually use all of the above,
+[FEATURES.md](FEATURES.md) for the itemized changelog-style development history, and
 [TODO.txt](TODO.txt) for what's next.
 
 <p align="center">
@@ -160,9 +176,12 @@ Redivue/
 │       └── types/                      # Shared TypeScript types
 ├── deploy/                           # docker-compose + nginx for a production-style setup
 ├── Dockerfile                        # Multi-stage build — single jar, frontend baked in
-├── FEATURES.md                       # Full feature list
+├── GUIDE.md                          # User guide — what each feature does and how to use it
+├── FEATURES.md                       # Development history — itemized, changelog-style
+├── DEPLOYMENT.md                     # Running Redivue on a server — TLS, reverse proxy, auth
 ├── SECURITY.md                       # Threat model — read before exposing this beyond localhost
-└── CONTRIBUTING.md                   # Architecture notes for contributors
+├── CONTRIBUTING.md                   # Architecture notes for contributors
+└── CODE_OF_CONDUCT.md                # Community standards
 ```
 
 ## Security
@@ -171,12 +190,13 @@ Redivue is a local admin/dev tool with **no built-in authentication** — same t
 running `redis-cli` or RedisInsight on your own machine. Do not expose it to an untrusted
 network without putting your own auth (reverse proxy, VPN, basic auth) in front of it. Read
 [SECURITY.md](SECURITY.md) for the full threat model before deploying it anywhere but
-`localhost`.
+`localhost`, and [DEPLOYMENT.md](DEPLOYMENT.md) for a production Compose + nginx + TLS setup.
 
 ## Contributing
 
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for architecture notes,
 conventions, and known quirks. `FEATURES.md` and `TODO.txt` track what's done and what's next.
+Everyone participating is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 

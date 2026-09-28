@@ -1,5 +1,9 @@
 # Redivue — Feature Roadmap
 
+> Looking for how to *use* a feature? See [GUIDE.md](GUIDE.md). This file is the development
+> history — what got built, in what order, against what backend endpoints — kept mostly for
+> contributors and for tracking scope against RedisInsight.
+
 ## Current Features ✅
 - Multi-connection support with auto-selection
 - Redis stats dashboard (memory, keys, clients, uptime, version, role)

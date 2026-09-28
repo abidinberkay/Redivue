@@ -46,7 +46,10 @@ public class RedisController {
             RedisStats stats = redisService.getStats(connection);
             return ResponseEntity.ok(stats);
         } catch (Exception e) {
-            log.error("Error fetching Redis stats", e);
+            // RedisService.getStats() already logs this (as a quiet warn for a routine
+            // unreachable-connection case, or a full error for anything else) - don't log it
+            // again here. This endpoint is hit automatically per saved connection by the
+            // sidebar's health-check badge, so duplicate full-trace logging here multiplies fast.
             return ResponseEntity.badRequest().build();
         }
     }
@@ -402,7 +405,8 @@ public class RedisController {
             boolean enabled = !configValue.isEmpty();
             return ResponseEntity.ok(Map.of("enabled", enabled, "value", configValue));
         } catch (Exception e) {
-            log.error("Error checking keyspace config", e);
+            // redisService.executeCommand() already logs this appropriately - see the comment
+            // on the /stats endpoint above for why this isn't re-logged here too.
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }

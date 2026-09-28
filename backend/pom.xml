@@ -25,6 +25,24 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--
+          Point patches over Spring Boot 3.2.12's managed versions, without bumping the parent.
+          Each one closes CVEs disclosed after 3.2.12 shipped; see the commit message for the
+          specific advisories. Re-check these whenever the Spring Boot parent version changes,
+          since a parent bump may already include equal-or-newer versions of its own.
+
+          logback is deliberately NOT overridden here: Spring Boot 3.2.x's LogbackLoggingSystem
+          calls LoggerContext.getConfigurationLock(), an internal API logback removed during the
+          1.5.x line's locking rewrite — every 1.5.x release tried (down to 1.5.19) fails at
+          startup with NoSuchMethodError. logback's 1.4.x branch never received a fix for
+          CVE-2025-11226 either, so closing it needs a Spring Boot minor upgrade (3.3+, where
+          LogbackLoggingSystem was rewritten for 1.5.x), not a property override. Left for that
+          upgrade rather than shipping a build that doesn't start.
+        -->
+        <tomcat.version>10.1.60</tomcat.version>
+        <netty.version>4.1.138.Final</netty.version>
+        <log4j2.version>2.26.1</log4j2.version>
     </properties>
 
     <dependencies>

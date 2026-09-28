@@ -1,0 +1,18 @@
+# Normalize line endings to LF in the repo and on checkout, regardless of the
+# contributor's OS/git config — avoids the "whole file shows as changed" problem
+# on Windows and keeps diffs clean.
+* text=auto eol=lf
+
+# Windows-only scripts should keep CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary/generated — never touch line endings, always diff as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.woff binary
+*.woff2 binary
