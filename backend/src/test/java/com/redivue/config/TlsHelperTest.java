@@ -26,10 +26,20 @@ class TlsHelperTest {
         Path dir = Files.createTempDirectory("redivue-test-tls");
         Path cert = dir.resolve("ca.pem");
         Path key = dir.resolve("ca-key.pem");
-        Process p = new ProcessBuilder("openssl", "req", "-x509", "-newkey", "rsa:2048",
-                "-keyout", key.toString(), "-out", cert.toString(), "-days", "1",
-                "-nodes", "-subj", "/CN=redivue-test-ca")
-                .redirectErrorStream(true).start();
+        Process p;
+        try {
+            p = new ProcessBuilder("openssl", "req", "-x509", "-newkey", "rsa:2048",
+                    "-keyout", key.toString(), "-out", cert.toString(), "-days", "1",
+                    "-nodes", "-subj", "/CN=redivue-test-ca")
+                    .redirectErrorStream(true).start();
+        } catch (java.io.IOException e) {
+            // openssl isn't on PATH at all (e.g. PowerShell on Windows, unlike Git Bash, doesn't
+            // put Git's bundled openssl on PATH by default) - ProcessBuilder.start() throws
+            // before there's a process to wait on, so this needs its own catch distinct from
+            // the "ran but failed" case below.
+            opensslMissing = true;
+            return;
+        }
         boolean finished = p.waitFor(30, java.util.concurrent.TimeUnit.SECONDS);
         if (!finished || p.exitValue() != 0 || !Files.exists(cert)) {
             opensslMissing = true;

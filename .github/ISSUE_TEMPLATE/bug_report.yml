@@ -1,0 +1,65 @@
+name: Bug report
+description: Something doesn't work the way it should
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: how-run
+    attributes:
+      label: How are you running Redivue?
+      options:
+        - Docker (docker run)
+        - Docker Compose
+        - Built from source
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Redivue version / image tag
+      placeholder: "e.g. latest, v1.0.0, or a commit hash if built from source"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: connection-type
+    attributes:
+      label: Redis connection type
+      description: How is Redivue connecting to your Redis (if the bug relates to a connection)?
+      options:
+        - Not applicable
+        - Password
+        - ACL (username/password)
+        - URL (redis:// or rediss://)
+        - Sentinel
+        - Cluster
+        - Unix socket
+        - SSH tunnel
+        - TLS / mTLS
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Backend container logs (`docker logs <container>`) and/or browser console output. This often contains the actual error.
+      render: shell
+    validations:
+      required: false
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: "e.g. Chrome 129"
+    validations:
+      required: false

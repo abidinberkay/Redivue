@@ -5,6 +5,7 @@ import Dashboard from './features/dashboard'
 import { encryptPassword, decryptPassword } from './utils/encryption'
 import type { Connection, HealthInfo, StoredConnection } from './types'
 import { connBody } from './types'
+import logo from './assets/logo.png'
 
 const STORAGE_KEY = 'redivue_connections'
 const SIDEBAR_WIDTH_KEY = 'redivue_sidebar_width'
@@ -301,6 +302,7 @@ function App() {
   return (
     <div className="app">
       <header className="header">
+        <img src={logo} alt="Redivue" className="header-logo" width={36} height={36} />
         <h1>Redivue</h1>
         <p>Multi-Redis Dashboard</p>
       </header>

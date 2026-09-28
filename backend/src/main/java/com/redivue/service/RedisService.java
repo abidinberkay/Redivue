@@ -3,6 +3,7 @@ package com.redivue.service;
 import com.redivue.config.RedisConnectionHolder;
 import com.redivue.config.RedisURIHelper;
 import com.redivue.model.*;
+import io.lettuce.core.RedisConnectionException;
 import io.lettuce.core.KeyScanCursor;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.Limit;
@@ -60,6 +61,24 @@ public class RedisService {
         return RedisURIHelper.connect(sshTunnelPool != null ? sshTunnelPool.resolve(conn) : conn);
     }
 
+    /**
+     * True if this exception (or something in its cause chain) means "couldn't reach the Redis
+     * server" — refused, timed out, unresolved host, etc. This is routine and expected (a saved
+     * connection's Redis is down, a network blipped) and happens automatically and repeatedly
+     * (e.g. the sidebar's health-check badge re-tries every saved connection), not a bug in
+     * Redivue. Logging it at ERROR with a full stack trace on every occurrence floods the
+     * console and makes the app look broken when it isn't - see the message-only warn() call
+     * sites below instead.
+     */
+    private boolean isConnectionFailure(Throwable e) {
+        for (Throwable t = e; t != null; t = t.getCause()) {
+            if (t instanceof RedisConnectionException || t instanceof java.net.ConnectException) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public RedisStats getStats(RedisConnection connection) {
         try (RedisConnectionHolder h = connect(connection)) {
             RedisCommands<String, String> commands = h.sync();
@@ -105,7 +124,11 @@ public class RedisService {
                     .build();
 
         } catch (Exception e) {
-            log.error("Error connecting to Redis", e);
+            if (isConnectionFailure(e)) {
+                log.warn("Redis unreachable at {}:{} - {}", connection.getHost(), connection.getPort(), e.getMessage());
+            } else {
+                log.error("Error connecting to Redis", e);
+            }
             throw new RuntimeException("Failed to connect to Redis: " + e.getMessage());
         }
     }
@@ -1222,7 +1245,11 @@ public class RedisService {
                     .executionTime(System.currentTimeMillis() - start)
                     .build();
         } catch (Exception e) {
-            log.error("CLI command failed", e);
+            if (isConnectionFailure(e)) {
+                log.warn("Redis unreachable at {}:{} - {}", request.getHost(), request.getPort(), e.getMessage());
+            } else {
+                log.error("CLI command failed", e);
+            }
             String msg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
             return CliResponse.builder()
                     .error(msg)

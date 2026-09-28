@@ -56,3 +56,43 @@ jobs:
       - name: Build
         working-directory: frontend
         run: npm run build
+
+  security-scan:
+    name: Container image vulnerability scan (Trivy)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image (not pushed - scan only)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          push: false
+          load: true
+          tags: redivue:scan
+
+      # Covers both the Alpine base image's own OS packages and the app's
+      # Maven/npm dependencies baked into the image - complements Dependabot,
+      # which only tracks the manifests, not what actually ends up in the image.
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@0.36.0
+        with:
+          image-ref: redivue:scan
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH
+          # Report only, don't fail the build - this is visibility, not a merge gate (yet).
+          exit-code: "0"
+
+      - name: Upload results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
