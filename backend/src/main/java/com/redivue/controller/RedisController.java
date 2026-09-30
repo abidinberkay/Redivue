@@ -313,13 +313,9 @@ public class RedisController {
     }
 
     @PostMapping("/{id}/slowlog")
-    public ResponseEntity<?> getSlowLog(@PathVariable String id, @RequestBody Map<String, Object> body) {
+    public ResponseEntity<?> getSlowLog(@PathVariable String id, @RequestBody SlowLogRequest request) {
         try {
-            String host = (String) body.get("host");
-            int port = ((Number) body.get("port")).intValue();
-            String password = (String) body.get("password");
-            int count = body.containsKey("count") ? ((Number) body.get("count")).intValue() : 25;
-            List<SlowLogEntry> entries = monitorService.getSlowLog(new RedisConnection(host, port, password), count);
+            List<SlowLogEntry> entries = monitorService.getSlowLog(request, request.getCount());
             return ResponseEntity.ok(entries);
         } catch (Exception e) {
             log.error("Error getting slow log", e);
@@ -346,20 +342,14 @@ public class RedisController {
     }
 
     @PostMapping("/{id}/publish")
-    public ResponseEntity<?> publish(@PathVariable String id, @RequestBody Map<String, Object> body) {
+    public ResponseEntity<?> publish(@PathVariable String id, @RequestBody PublishRequest request) {
         try {
-            String host = (String) body.get("host");
-            int port = ((Number) body.get("port")).intValue();
-            String password = (String) body.get("password");
-            int db = body.get("db") != null ? ((Number) body.get("db")).intValue() : 0;
-            String channel = (String) body.get("channel");
-            String message = (String) body.get("message");
+            String channel = request.getChannel();
             if (channel == null || channel.isBlank()) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Channel is required"));
             }
-            RedisConnection conn = new RedisConnection(host, port, password);
-            conn.setDb(db);
-            long received = pubSubService.publish(conn, channel, message != null ? message : "");
+            String message = request.getMessage();
+            long received = pubSubService.publish(request, channel, message != null ? message : "");
             return ResponseEntity.ok(Map.of("received", received));
         } catch (Exception e) {
             log.error("Error publishing message", e);
