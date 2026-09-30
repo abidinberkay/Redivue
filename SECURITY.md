@@ -38,6 +38,12 @@ authentication (HTTP basic auth, an OAuth proxy, a VPN, etc.) — do not rely on
 app for that. Binding to `127.0.0.1` only (not `0.0.0.0`) is the simplest safe default for a
 single-user local install.
 
+**DNS rebinding.** Binding to localhost alone doesn't stop a malicious web page you visit from
+pointing its own domain at `127.0.0.1` and calling a local Redivue as if it were same-origin.
+Redivue rejects any request whose `Host` header isn't a loopback name or listed in
+`REDIVUE_ALLOWED_HOSTS` (see [DEPLOYMENT.md](DEPLOYMENT.md#allowed-hosts)), which closes this. Don't
+set it to `*` on a machine you also browse the web from.
+
 ## Known Limitations (by design, not bugs)
 
 - **Connection passwords are obfuscated, not encrypted.** The frontend stores saved connections

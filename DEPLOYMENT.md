@@ -37,10 +37,13 @@ certbot certonly --standalone -d your.domain.com
 cp /etc/letsencrypt/live/your.domain.com/fullchain.pem deploy/ssl/cert.pem
 cp /etc/letsencrypt/live/your.domain.com/privkey.pem    deploy/ssl/key.pem
 
-# 2. Build and start
+# 2. Tell Redivue which hostname(s) it is served under (see "Allowed hosts" below)
+export REDIVUE_ALLOWED_HOSTS=your.domain.com      # or your server IP; comma-separate several
+
+# 3. Build and start
 docker compose -f deploy/docker-compose.prod.yml up -d --build
 
-# 3. Open
+# 4. Open
 https://your-server-ip-or-domain
 ```
 
@@ -94,7 +97,25 @@ services:
       - JAVA_TOOL_OPTIONS=-Xmx512m
 ```
 
-There's nothing else to configure server-side — every Redis connection (host, auth, TLS certs,
+### Allowed hosts
+
+Redivue only answers requests whose `Host` header is `localhost`, `127.0.0.1` or `[::1]`, plus
+whatever you list in `REDIVUE_ALLOWED_HOSTS` (comma-separated, ports ignored). This blocks
+DNS-rebinding attacks, where a malicious web page points its own domain at `127.0.0.1` to talk to
+a local Redivue. Anything served under another name — a domain, a LAN IP, a Tailscale name — needs
+that name listed, or the browser gets `403 Host ... is not allowed`:
+
+```yaml
+services:
+  redivue:
+    environment:
+      - REDIVUE_ALLOWED_HOSTS=redivue.internal.example,10.0.0.5
+```
+
+`REDIVUE_ALLOWED_HOSTS=*` turns the check off; only do that when something in front of Redivue
+already restricts who can reach it.
+
+Apart from that there's nothing to configure server-side — every Redis connection (host, auth, TLS certs,
 SSH tunnel keys) is supplied per-connection from the browser at request time and lives in that
 browser's `localStorage`, not in any server config. That also means **SSH private keys pasted
 into the connection form are a per-connection, per-user thing, not a deployment concern** —
