@@ -1,12 +1,10 @@
-version: '3.8'
-
 # Production deployment: Redivue app + nginx HTTPS reverse proxy.
 # Redis instances are NOT included — Redivue connects to your existing Redis servers.
 #
 # Quick start:
 #   1. Generate certs:  bash deploy/generate-certs.sh          (self-signed, internal use)
 #      OR copy Let's Encrypt certs to deploy/ssl/cert.pem and deploy/ssl/key.pem
-#   2. Build & start:   docker compose -f deploy/docker-compose.prod.yml up -d
+#   2. Build & start:   REDIVUE_ALLOWED_HOSTS=your.domain.com docker compose -f deploy/docker-compose.prod.yml up -d
 #   3. Open:            https://localhost  (or your server IP/domain)
 
 services:
@@ -15,6 +13,10 @@ services:
       context: ..
       dockerfile: Dockerfile
     container_name: redivue-app
+    environment:
+      # Hostname(s) this deployment is served under, e.g. your domain or server IP.
+      # Requests with any other Host header get a 403 (DNS-rebinding guard). See DEPLOYMENT.md.
+      - REDIVUE_ALLOWED_HOSTS=${REDIVUE_ALLOWED_HOSTS:-}
     expose:
       - "8080"
     networks:

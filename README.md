@@ -114,8 +114,9 @@ also add `--add-host=host.docker.internal:host-gateway`). Images are published f
 and `linux/arm64`.
 
 The port is bound to `127.0.0.1` on purpose: Redivue has no login of its own, so anyone who can
-reach it can run commands against your saved connections. See [SECURITY.md](SECURITY.md) and
-[DEPLOYMENT.md](DEPLOYMENT.md) before exposing it beyond your own machine.
+reach it can run commands against your saved connections. To open it under any name other than
+`localhost` (a LAN IP, a domain), list that name in `REDIVUE_ALLOWED_HOSTS` — see
+[DEPLOYMENT.md](DEPLOYMENT.md#allowed-hosts) and [SECURITY.md](SECURITY.md) first.
 
 ### From source
 
