@@ -60,12 +60,6 @@ jobs:
   security-scan:
     name: Container image vulnerability scan (Trivy)
     runs-on: ubuntu-latest
-    # This job is new and still being debugged (the image build step is failing here for a
-    # reason not yet diagnosed - can't fetch this job's raw logs without a token with repo
-    # write access, only the REST summary). continue-on-error keeps a real problem with it from
-    # flipping the whole workflow - and the README's CI badge - red over what's meant to be an
-    # informational, non-blocking scan; remove this once it's confirmed green.
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
