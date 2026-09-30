@@ -25,6 +25,11 @@ jobs:
           java-version: "21"
           cache: maven
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
       - name: Build jar
         working-directory: backend
         run: mvn -B clean package -DskipTests

@@ -94,7 +94,7 @@ See the **[User Guide](GUIDE.md)** for how to actually use all of the above,
 ### Docker
 
 ```bash
-docker run -p 8080:8080 ghcr.io/abidinberkay/redivue:latest
+docker run -p 127.0.0.1:8080:8080 ghcr.io/abidinberkay/redivue:latest
 ```
 
 Or with Compose:
@@ -104,17 +104,22 @@ services:
   redivue:
     image: ghcr.io/abidinberkay/redivue:latest
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     restart: unless-stopped
 ```
 
 Open `http://localhost:8080` and add a connection to any Redis reachable from the container
-(use `host.docker.internal` instead of `localhost` to reach a Redis running on your host).
-Images are published for `linux/amd64` and `linux/arm64`.
+(use `host.docker.internal` instead of `localhost` to reach a Redis running on your host; on Linux,
+also add `--add-host=host.docker.internal:host-gateway`). Images are published for `linux/amd64`
+and `linux/arm64`.
+
+The port is bound to `127.0.0.1` on purpose: Redivue has no login of its own, so anyone who can
+reach it can run commands against your saved connections. See [SECURITY.md](SECURITY.md) and
+[DEPLOYMENT.md](DEPLOYMENT.md) before exposing it beyond your own machine.
 
 ### From source
 
-Prerequisites: Java 21, Node.js 18+, Maven 3.8+.
+Prerequisites: Java 21, Node.js 20.19+ (22+ recommended), Maven 3.8+.
 
 ```bash
 git clone https://github.com/abidinberkay/Redivue.git
