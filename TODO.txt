@@ -1,46 +1,26 @@
 ================================================================
-REDISINSIGHT COMPARISON — OPEN TASKS
-See FEATURES.md for completed features. This file contains only
-pending/planned work.
+ROADMAP — PLANNED / OPEN WORK
+See FEATURES.md for what is already built. This file lists only
+pending or planned work. Ideas and PRs are welcome — open an issue
+first for anything large.
 ================================================================
 
-OPEN SOURCE PREPARATION — done:
-- DEPLOYMENT.md, README.md (incl. Project Structure rewrite), npm audit fix
-  (axios/form-data), GitHub issue templates.
-- Backend dependency CVE check (GitHub Advisory DB, cross-referenced against
-  the actual dependency:tree, not just guessed from Spring Boot version).
-  Patched via pom.xml property overrides: tomcat.version 10.1.60 (closes
-  several critical embedded-Tomcat CVEs), netty.version 4.1.138.Final
-  (closes SNI/decoder DoS CVEs — relevant since value decompression is a
-  real feature here), log4j2.version 2.26.1.
+BACKLOG (optional, advanced):
 
-Still open:
-1. logback is stuck on Spring Boot 3.2.12's managed 1.4.14, which never got
-   a fix for CVE-2025-11226 (arbitrary code exec via file processing,
-   medium). Every 1.5.x version breaks Spring Boot 3.2.x's LogbackLoggingSystem
-   at startup (NoSuchMethodError on LoggerContext.getConfigurationLock(),
-   removed in logback's 1.5.x locking rewrite) — confirmed by actually
-   running the jar, not just building it. Real fix is a Spring Boot 3.3+
-   upgrade (LogbackLoggingSystem was rewritten there for 1.5.x); that's a
-   separate, bigger change than a property override.
-
-
-ADVANCED LEVEL (optional, backlog):
-
-2. WORKBENCH style advanced command editor
+1. WORKBENCH style advanced command editor
    - Monaco editor, multi-line, syntax highlighting, smart autocomplete (more advanced than CLI)
    - Query library (saved queries — evolution of CLI favorites)
 
-3. CLUSTER DETAILS dashboard
+2. CLUSTER DETAILS dashboard
    - Node list, slot distribution, shards, per-node memory/ops metrics (CLUSTER SHARDS/NODES visualization)
 
-4. RediSearch (FT.*) support — index list, FT.SEARCH query interface (if module present)
+3. RediSearch (FT.*) support — index list, FT.SEARCH query interface (if module present)
 
-5. More comprehensive RECOMMENDATIONS engine
+4. More comprehensive RECOMMENDATIONS engine
    - RedisInsight gives contextual recommendations (large keys, encoding suggestions, missing TTLs etc.)
    - Memory Analysis recommendations can be expanded
 
-6. Frontend UI/UX polish
+5. Frontend UI/UX polish
     - More modern, clean, consistent design refresh
 
 
