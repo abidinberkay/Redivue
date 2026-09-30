@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { decompress as zstdDecompress } from 'fzstd'
 import * as lz4 from 'lz4js'
 import Snappy from 'snappyjs'
@@ -98,7 +98,7 @@ export function KeyDetail({ result, connBody, connectionId, onRefresh, onKeyDele
 
   const liveTtl = useLiveTtl(ttl)
 
-  const loadStreamGroups = async () => {
+  const loadStreamGroups = useCallback(async () => {
     setLoadingGroups(true)
     try {
       const res = await fetch(`/api/redis/${connectionId}/key/stream-groups`, {
@@ -108,13 +108,14 @@ export function KeyDetail({ result, connBody, connectionId, onRefresh, onKeyDele
       if (res.ok) setStreamGroups(await res.json())
     } catch (_) { /* ignore */ }
     finally { setLoadingGroups(false) }
-  }
+  }, [connectionId, connBody, key])
 
+  // Sole loader for the groups tab: opening it, or clearing streamGroups (Refresh), triggers a fetch
   useEffect(() => {
     if (type === 'stream' && streamGroupsTab === 'groups' && !streamGroups) {
       loadStreamGroups()
     }
-  }, [streamGroupsTab, type])
+  }, [streamGroupsTab, type, streamGroups, loadStreamGroups])
 
   useEffect(() => {
     if (!(DECOMP_ALGOS as string[]).includes(formatter)) {
@@ -359,7 +360,7 @@ export function KeyDetail({ result, connBody, connectionId, onRefresh, onKeyDele
         <div>
           <div className="stream-tab-bar">
             <button className={`stream-tab${streamGroupsTab === 'entries' ? ' active' : ''}`} onClick={() => setStreamGroupsTab('entries')}>Entries ({entries.length})</button>
-            <button className={`stream-tab${streamGroupsTab === 'groups' ? ' active' : ''}`} onClick={() => { setStreamGroupsTab('groups'); if (!streamGroups) loadStreamGroups() }}>Consumer Groups</button>
+            <button className={`stream-tab${streamGroupsTab === 'groups' ? ' active' : ''}`} onClick={() => setStreamGroupsTab('groups')}>Consumer Groups</button>
           </div>
 
           {streamGroupsTab === 'entries' && (
@@ -429,7 +430,7 @@ export function KeyDetail({ result, connBody, connectionId, onRefresh, onKeyDele
                     </div>
                   ))
               )}
-              <button className="btn-secondary btn-sm" style={{ marginTop: 8 }} onClick={() => { setStreamGroups(null); loadStreamGroups() }}>↻ Refresh</button>
+              <button className="btn-secondary btn-sm" style={{ marginTop: 8 }} onClick={() => setStreamGroups(null)}>↻ Refresh</button>
             </div>
           )}
         </div>

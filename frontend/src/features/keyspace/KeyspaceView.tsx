@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { connBody as buildConnBody, registerSession } from '../../types'
 import type { Connection } from '../../types'
 import { Button } from '@/components/ui/button'
@@ -50,16 +50,9 @@ export default function KeyspaceView({ connection, onLog }: {
   const esRef             = useRef<EventSource | null>(null)
   const entriesCountRef   = useRef(0)
 
-  const connBody = buildConnBody(connection)
+  const connBody = useMemo(() => buildConnBody(connection), [connection])
 
-  // Check config on mount / connection change
-  useEffect(() => {
-    setConfigStatus('checking')
-    checkConfig()
-    return () => stopStream()
-  }, [connection.id, connection.db])
-
-  const checkConfig = async () => {
+  const checkConfig = useCallback(async () => {
     try {
       const res = await fetch(`/api/redis/${connection.id}/keyspace/check`, {
         method: 'POST',
@@ -72,7 +65,14 @@ export default function KeyspaceView({ connection, onLog }: {
     } catch {
       setConfigStatus('error')
     }
-  }
+  }, [connection.id, connBody])
+
+  // Check config on mount / connection change (connBody changes with the connection, incl. db)
+  useEffect(() => {
+    setConfigStatus('checking')
+    checkConfig()
+    return () => stopStream()
+  }, [checkConfig])
 
   const enableNotifications = async () => {
     setEnabling(true)

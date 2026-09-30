@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import './CliConsole.css'
 import { connBody as buildConnBody } from '../../types'
 
@@ -564,7 +564,7 @@ export default function CliConsole({ connection, onLog, onAdd, onClose, compact 
     prevConnRef.current = { id: connection.id, db: cur }
   }, [connection.id, connection.db])
 
-  const connBody = buildConnBody(connection)
+  const connBody = useMemo(() => buildConnBody(connection), [connection])
 
   const runCommand = useCallback(async (command) => {
     const trimmed = command.trim()
@@ -618,7 +618,7 @@ export default function CliConsole({ connection, onLog, onAdd, onClose, compact 
       setLoading(false)
       inputRef.current?.focus()
     }
-  }, [connection, pendingDangerous])
+  }, [connection.id, connBody, pendingDangerous, onLog])
 
   const handleSubmit = () => {
     const cmd = input.trim()

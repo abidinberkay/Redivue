@@ -145,7 +145,7 @@ function KeyDetailModal({ keyInfo, connection, connBody, onClose, onDeleted, onR
     } finally {
       setLoading(false)
     }
-  }, [keyInfo.key, connection.id])
+  }, [keyInfo.key, connection.id, connBody])
 
   useEffect(() => { fetchValue() }, [fetchValue])
 
@@ -451,7 +451,7 @@ export default function MemoryView({ connection, onLog }) {
   const [history, setHistory] = useState<any[]>([])
   const [showHistory, setShowHistory] = useState(false)
 
-  const connBody = buildConnBody(connection)
+  const connBody = useMemo(() => buildConnBody(connection), [connection])
 
   useEffect(() => {
     setData(null)

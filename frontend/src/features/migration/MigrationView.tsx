@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import './MigrationView.css'
 import { connBody as buildConnBody } from '../../types'
 
@@ -53,7 +53,7 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
   const [exportList, setExportList] = useState<any[]>([])
   const [loadingExports, setLoadingExports] = useState(false)
 
-  const connBody = buildConnBody(connection)
+  const connBody = useMemo(() => buildConnBody(connection), [connection])
   const targetConn = allConnections.find(c => String(c.id) === targetId)
   const isSameConnAndDb = targetConn != null && String(targetConn.id) === String(connection.id) && targetDb === (connection.db ?? 0)
   const targetName = (c) => c.name || `${c.host}:${c.port}`
@@ -119,7 +119,7 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
     }
   }
 
-  const loadExportList = async () => {
+  const loadExportList = useCallback(async () => {
     setLoadingExports(true)
     try {
       const r = await fetch(`/api/redis/${connection.id}/migration/exports`, { method: 'GET' })
@@ -132,7 +132,7 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
     } finally {
       setLoadingExports(false)
     }
-  }
+  }, [connection.id])
 
   const handleDeleteExport = async (fileId: string) => {
     if (!confirm(`Delete export ${fileId}?`)) return
@@ -147,7 +147,7 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
 
   useEffect(() => {
     if (mode === 'disk') loadExportList()
-  }, [mode])
+  }, [mode, loadExportList])
 
   // ── RAM: scan ──
   const handleScan = useCallback(async () => {
@@ -170,7 +170,7 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
     } finally {
       setScanning(false)
     }
-  }, [connection, pattern])
+  }, [connection.id, connBody, pattern])
 
   // ── RAM: migrate ──
   const handleRamMigrate = async () => {

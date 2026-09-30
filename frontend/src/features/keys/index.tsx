@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import './KeysBrowser.css'
 import { KeyDetail } from './KeyDetail'
 import { AddKeyModal } from './modals/AddKeyModal'
@@ -51,7 +51,7 @@ export default function KeysBrowser({ connection, onLog, onRefreshHealth }: {
   const favDropdownRef = useRef<HTMLDivElement>(null)
   const importFileRef = useRef<HTMLInputElement>(null)
 
-  const connBody: ConnBody = buildConnBody(connection)
+  const connBody: ConnBody = useMemo(() => buildConnBody(connection), [connection])
 
   const formatSize = (bytes?: number): string => {
     if (bytes == null) return '—'
@@ -181,7 +181,7 @@ export default function KeysBrowser({ connection, onLog, onRefreshHealth }: {
     } catch (err) {
       if ((err as Error).name !== 'AbortError') setError((err as Error).message)
     } finally { setScanning(false) }
-  }, [connection, pattern, cursor])
+  }, [connection.id, connBody, pattern, cursor])
 
   const historyKey = `redivue_history_${connection.id}`
   const favKey = `redivue_favorites_${connection.id}`
