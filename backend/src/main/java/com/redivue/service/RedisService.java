@@ -1570,7 +1570,7 @@ public class RedisService {
         byte[] bytes = name.getBytes(java.nio.charset.StandardCharsets.US_ASCII);
         return new ProtocolKeyword() {
             @Override public byte[] getBytes() { return bytes; }
-            @Override public String name() { return name; }
+            @Override public String toString() { return name; }
         };
     }
 
