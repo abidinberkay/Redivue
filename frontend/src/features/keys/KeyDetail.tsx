@@ -508,7 +508,7 @@ export function KeyDetail({ result, connBody, connectionId, onRefresh, onKeyDele
           <span className="json-bracket">{'{'}</span>
           {keys.length === 0 ? <span className="json-empty">(empty)</span> : (
             <div className="json-items">
-              {keys.map((k, i) => (
+              {keys.map(k => (
                 <div key={k} className="json-item">
                   <span className="json-key">&quot;{k}&quot;</span>: {renderJsonTree(obj[k], `${path}.${k}`, depth + 1)}
                 </div>
