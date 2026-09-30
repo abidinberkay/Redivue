@@ -139,7 +139,6 @@ export default function MonitorView({ connection, onLog }) {
 
   const esRef = useRef(null)
   const timerRef = useRef(null)
-  const streamRef = useRef(null)
   const entriesCountRef = useRef(0)
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const attemptRef = useRef(0)
@@ -201,7 +200,7 @@ export default function MonitorView({ connection, onLog }) {
     })
 
     // Transient errors (Redis down, network loss) — attempt reconnect
-    es.addEventListener('monitor-error', e => {
+    es.addEventListener('monitor-error', () => {
       if (!esRef.current) return
       esRef.current.close()
       esRef.current = null

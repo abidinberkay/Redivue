@@ -499,7 +499,7 @@ export default function CliConsole({ connection, onLog, onAdd, onClose, compact 
   const [entries, setEntries] = useState([])
   const [input, setInput] = useState('')
   const [cmdHistory, setCmdHistory] = useState([])
-  const [histIdx, setHistIdx] = useState(-1)
+  const [, setHistIdx] = useState(-1)
   const [loading, setLoading] = useState(false)
   const [suggestions, setSuggestions] = useState([])
   const [suggIdx, setSuggIdx] = useState(-1)

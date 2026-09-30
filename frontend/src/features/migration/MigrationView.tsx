@@ -37,7 +37,6 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
   const [scanError, setScanError] = useState('')
 
   // --- Command Import state ---
-  const [importFile, setImportFile] = useState<File | null>(null)
   const [importParsed, setImportParsed] = useState<string[]>([])
   const [importing2, setImporting2] = useState(false)
   const [importResults, setImportResults] = useState<{ total: number; succeeded: number; failed: { command: string; error: string }[] } | null>(null)
@@ -51,7 +50,6 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
   const [diskResults, setDiskResults] = useState(null)
   const [importError, setImportError] = useState('')
   const [exportList, setExportList] = useState<any[]>([])
-  const [loadingExports, setLoadingExports] = useState(false)
 
   const connBody = useMemo(() => buildConnBody(connection), [connection])
   const targetConn = allConnections.find(c => String(c.id) === targetId)
@@ -70,7 +68,6 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
     setMode(m)
     setFoundKeys(null)
     setExportInfo(null)
-    setImportFile(null)
     setImportParsed([])
     setImportResults(null)
     setImportError2('')
@@ -80,7 +77,6 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
 
   const handleImportFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null
-    setImportFile(file)
     setImportParsed([])
     setImportResults(null)
     setImportError2('')
@@ -120,7 +116,6 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
   }
 
   const loadExportList = useCallback(async () => {
-    setLoadingExports(true)
     try {
       const r = await fetch(`/api/redis/${connection.id}/migration/exports`, { method: 'GET' })
       if (!r.ok) throw new Error('Failed to load exports')
@@ -129,8 +124,6 @@ export default function MigrationView({ connection, onLog, onRefreshHealth }) {
     } catch (e) {
       console.error('Error loading exports:', e)
       setExportList([])
-    } finally {
-      setLoadingExports(false)
     }
   }, [connection.id])
 

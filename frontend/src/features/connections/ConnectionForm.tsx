@@ -79,7 +79,6 @@ const AUTH_HINTS: Record<AuthType, { title: string; lines: string[]; examples: s
 }
 
 const HOST_PORT_TYPES: AuthType[] = ['PASSWORD', 'USERNAME_PASSWORD']
-const CLUSTER_SENTINEL_TYPES: AuthType[] = ['CLUSTER', 'SENTINEL']
 const SSH_SUPPORTED_TYPES: AuthType[] = ['PASSWORD', 'USERNAME_PASSWORD']
 
 export default function ConnectionForm({ onAddConnection }: ConnectionFormProps) {
@@ -109,7 +108,6 @@ export default function ConnectionForm({ onAddConnection }: ConnectionFormProps)
   const [sshPrivateKeyPassphrase, setSshPrivateKeyPassphrase] = useState('')
 
   // TLS Certificates
-  const [tlsSkipVerify, setTlsSkipVerify] = useState(false)
   const [tlsTrustMode, setTlsTrustMode] = useState<'system' | 'skip' | 'custom'>('system')
   const [tlsCaCert, setTlsCaCert] = useState('')
   const [tlsClientCert, setTlsClientCert] = useState('')
@@ -124,7 +122,7 @@ export default function ConnectionForm({ onAddConnection }: ConnectionFormProps)
     setAuthType('PASSWORD')
     setSshEnabled(false); setSshHost(''); setSshPort('22'); setSshUser('')
     setSshAuthMode('password'); setSshPassword(''); setSshPrivateKey(''); setSshPrivateKeyPassphrase('')
-    setTlsSkipVerify(false); setTlsTrustMode('system')
+    setTlsTrustMode('system')
     setTlsCaCert(''); setTlsClientCert(''); setTlsClientKey('')
   }
 
@@ -351,17 +349,17 @@ export default function ConnectionForm({ onAddConnection }: ConnectionFormProps)
               <div className="tls-trust-options">
                 <label className="tls-radio">
                   <input type="radio" checked={tlsTrustMode === 'system'}
-                    onChange={() => { setTlsTrustMode('system'); setTlsSkipVerify(false) }} />
+                    onChange={() => setTlsTrustMode('system')} />
                   System CA (default)
                 </label>
                 <label className="tls-radio">
                   <input type="radio" checked={tlsTrustMode === 'skip'}
-                    onChange={() => { setTlsTrustMode('skip'); setTlsSkipVerify(true) }} />
+                    onChange={() => setTlsTrustMode('skip')} />
                   Skip verification <span className="tls-insecure">(insecure)</span>
                 </label>
                 <label className="tls-radio">
                   <input type="radio" checked={tlsTrustMode === 'custom'}
-                    onChange={() => { setTlsTrustMode('custom'); setTlsSkipVerify(false) }} />
+                    onChange={() => setTlsTrustMode('custom')} />
                   Custom CA certificate
                 </label>
               </div>
