@@ -100,16 +100,19 @@ export function StatsView({ stats, loading, onRefresh, onLog, connectionId, conn
   const [showMaxMemoryModal, setShowMaxMemoryModal] = useState(false)
   const [showAofModal, setShowAofModal] = useState(false)
 
-  const startAutoRefresh = (secs: number) => {
-    clearInterval(timerRef.current!); clearInterval(countdownRef.current!)
-    setCountdown(secs)
-    timerRef.current = setInterval(() => { onRefresh(); setCountdown(secs) }, secs * 1000)
-    countdownRef.current = setInterval(() => { setCountdown(prev => (prev <= 1 ? secs : prev - 1)) }, 1000)
-  }
+  // Read through a ref so the timer always calls the latest onRefresh without restarting
+  const onRefreshRef = useRef(onRefresh)
+  onRefreshRef.current = onRefresh
 
   useEffect(() => {
-    if (autoRefresh) { startAutoRefresh(interval) }
-    else { clearInterval(timerRef.current!); clearInterval(countdownRef.current!); setCountdown(0) }
+    clearInterval(timerRef.current!); clearInterval(countdownRef.current!)
+    if (autoRefresh) {
+      setCountdown(interval)
+      timerRef.current = setInterval(() => { onRefreshRef.current(); setCountdown(interval) }, interval * 1000)
+      countdownRef.current = setInterval(() => { setCountdown(prev => (prev <= 1 ? interval : prev - 1)) }, 1000)
+    } else {
+      setCountdown(0)
+    }
     return () => { clearInterval(timerRef.current!); clearInterval(countdownRef.current!) }
   }, [autoRefresh, interval])
 

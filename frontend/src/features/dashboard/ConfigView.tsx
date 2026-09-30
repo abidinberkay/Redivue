@@ -193,7 +193,7 @@ export function ConfigView({ connectionId, connBody, active, onLog }: {
       }
     }
     load()
-  }, [active])
+  }, [active, connectionId, connBody])
 
   const handleSaved = (key: string, newVal: string) => {
     setConfig(prev => prev ? ({ ...prev, [key]: newVal }) : prev)

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import './Dashboard.css'
 import KeysBrowser from '../keys'
 import { MultiCliConsole } from '../cli/MultiCliConsole'
@@ -27,7 +27,7 @@ export default function Dashboard({ connection, onRefreshHealth, onChangeDb, onK
   const [activityLog, setActivityLog] = useState<any[]>([])
   const [showActivityPanel, setShowActivityPanel] = useState(false)
 
-  const connBody: ConnBody = buildConnBody(connection)
+  const connBody: ConnBody = useMemo(() => buildConnBody(connection), [connection])
 
   // Always-current ref so fetchStats never closes over a stale connBody
   const connBodyRef = useRef(connBody)
