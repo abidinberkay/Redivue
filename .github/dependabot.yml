@@ -1,5 +1,9 @@
 version: 2
 updates:
+  # Major version bumps are ignored for npm, Maven and Docker: they need a deliberate
+  # migration (e.g. Spring Boot 4, Tailwind 4, a new Java LTS), not an auto-PR.
+  # Do those upgrades by hand.
+
   # Frontend (npm)
   - package-ecosystem: "npm"
     directory: "/frontend"
@@ -9,6 +13,9 @@ updates:
     groups:
       npm-minor-patch:
         update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   # Backend (Maven)
   - package-ecosystem: "maven"
@@ -19,19 +26,31 @@ updates:
     groups:
       maven-minor-patch:
         update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   # Container base images (root Dockerfile + deploy/Dockerfile.release)
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "docker"
     directory: "/deploy"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
-  # GitHub Actions workflows
+  # GitHub Actions workflows — all bumps in one PR
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      github-actions:
+        patterns: ["*"]
